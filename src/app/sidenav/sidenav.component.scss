@@ -1,0 +1,74 @@
+h1 {
+    padding: 0 1rem;
+}
+
+mat-toolbar {
+    position: absolute;
+    top: 0;
+    z-index: 2;
+}
+
+mat-sidenav-container {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+mat-sidenav, mat-sidenav-content {
+    padding-top: 3.5rem;
+    @media screen and (min-width: 600px) {
+        padding-top: 4rem;
+    }
+}
+
+mat-sidenav {
+    span {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem;
+    }
+}
+
+.dark-mode-icon {
+    color: white;
+}
+
+.example-card {
+    max-width: 380px;
+    //width: calc(100% - 10px); // Adjusting width to account for gutter size
+    height: 100%;
+    //display: flex;
+    //flex-direction: column;
+    //justify-content: space-between;
+    //align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); // Elevation effect
+}
+
+.example-card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+  
+.example-header-image {
+    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    background-size: cover;
+}
+
+.main-content {
+    padding: 20px;
+}
+
+h2 {
+    padding-top: 50px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-row-gap: 24px;
+    grid-column-gap: 16px;
+}
