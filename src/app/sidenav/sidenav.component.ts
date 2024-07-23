@@ -1,6 +1,6 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { NgClass, NgIf } from '@angular/common';
-import { Component, ViewChild, inject } from '@angular/core';
+import { NgClass, NgFor, NgIf } from '@angular/common';
+import { Component, ViewChild, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
@@ -11,17 +11,20 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatMenuModule } from '@angular/material/menu';
 
 export interface Tile {
   title: string;
   subtitle: string;
   description: string;
+  cols?: number;
+  rows?: number;
 }
 
 @Component({
   selector: 'app-sidenav',
   standalone: true,
-  imports: [MatToolbarModule, MatIconModule, MatButtonModule, MatSidenavModule, MatListModule, NgIf, MatSlideToggleModule, NgClass, MatCardModule, ScrollingModule, MatGridListModule],
+  imports: [MatToolbarModule, MatIconModule, MatButtonModule, MatSidenavModule, MatListModule, NgIf, MatSlideToggleModule, NgClass, MatCardModule, ScrollingModule, MatGridListModule, NgFor, MatMenuModule],
   templateUrl: './sidenav.component.html',
   styleUrl: './sidenav.component.scss'
 })
@@ -31,13 +34,22 @@ export class SidenavComponent {
   isMobile: boolean = true;
   isCollapsed: boolean = true;
   CustomThemeService: CustomThemeService = inject(CustomThemeService);
-  tiles: Tile[] = [{title: 'Shiba Inu', subtitle: 'Dog Breed', description: 'The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan. A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally bred for hunting.'},
-    {title: 'Shiba Inu', subtitle: 'Dog Breed', description: 'The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan. A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally bred for hunting.'},
-    {title: 'Shiba Inu', subtitle: 'Dog Breed', description: 'The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan. A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally bred for hunting.'},
-    {title: 'Shiba Inu', subtitle: 'Dog Breed', description: 'The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan. A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally bred for hunting.'}
-  ];
+  cards = signal<Tile[]>([]);
+  setDarkModeToDisabled: boolean = false;
+  setLightModeToDisabled: boolean = false;
 
-  constructor(private observer: BreakpointObserver) {}
+  constructor(private observer: BreakpointObserver) {
+    const cards: Tile[] = [];
+    for (let i = 0; i < 9; i++) {
+      cards.push({
+        title: 'Shiba Inu',
+        subtitle: 'Dog Breed',
+        description: 'The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan. A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally bred for hunting'
+      });
+    }
+
+    this.cards.set(cards);
+  }
 
   ngOnInit() {
     this.observer.observe(['(max-width: 800px)']).subscribe((screenSize) => {
@@ -61,5 +73,13 @@ export class SidenavComponent {
 
   toggleTheme() {
     this.CustomThemeService.updateTheme();
+  }
+
+  checkCurrentTheme() {
+    if (this.CustomThemeService.themeSignal() === 'dark-mode') {
+      this.setDarkModeToDisabled = true;
+    } else if (this.CustomThemeService.themeSignal() === 'light-mode') {
+      this.setLightModeToDisabled = true;
+    }
   }
 }

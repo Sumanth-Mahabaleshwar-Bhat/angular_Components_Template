@@ -39,14 +39,7 @@ mat-sidenav {
 }
 
 .example-card {
-    max-width: 380px;
-    //width: calc(100% - 10px); // Adjusting width to account for gutter size
-    height: 100%;
-    //display: flex;
-    //flex-direction: column;
-    //justify-content: space-between;
-    //align-items: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); // Elevation effect
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .example-card:hover {
@@ -55,7 +48,7 @@ mat-sidenav {
   
 .example-header-image {
     background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
-    background-size: cover;
+    background-size: cover;   
 }
 
 .main-content {
@@ -66,9 +59,9 @@ h2 {
     padding-top: 50px;
 }
 
-.grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-row-gap: 24px;
-    grid-column-gap: 16px;
+img {
+    object-fit: cover !important;
+    padding: 10px;
+    width: 100%;
+    height: 350px;
 }

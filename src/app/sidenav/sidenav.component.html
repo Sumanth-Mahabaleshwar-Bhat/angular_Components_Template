@@ -35,31 +35,54 @@
                     </span>
                 </mat-list-item>
             </mat-nav-list>
+            <mat-nav-list>
+                <mat-list-item>
+                    <button mat-icon-button [matMenuTriggerFor]="modeMenu" aria-label="Light Mode or Dark Mode Selection">
+                        @if (CustomThemeService.themeSignal() === 'dark-mode') {
+                            <mat-icon class="dark-mode-icon">
+                                dark_mode
+                            </mat-icon>
+                        } @else {
+                            <mat-icon>
+                                light_mode
+                            </mat-icon>
+                        }
+                    </button>
+                    <mat-menu #modeMenu="matMenu">
+                        <button mat-menu-item (click)="toggleTheme()">
+                            <mat-icon>light_mode</mat-icon>
+                            <span>Light</span>
+                        </button>
+                        <button mat-menu-item (click)="toggleTheme()">
+                            <mat-icon class="dark-mode-icon">dark_mode</mat-icon>
+                            <span>Dark</span>
+                        </button>
+                    </mat-menu> 
+                </mat-list-item> 
+            </mat-nav-list> 
         </mat-sidenav>
         <mat-sidenav-content class="main-content">
             <h2>Side Navigation Content</h2>
-            <mat-grid-list cols="3" gutterSize="10px" class="grid">
-                @for (tile of tiles; track tile) {
-                    <mat-grid-tile class="grid-tile">
-                        <mat-card class="example-card" appearance="outlined">
-                            <mat-card-header>
-                                <div mat-card-avatar class="example-header-image"></div>
-                                <mat-card-title>{{ tile.title }}</mat-card-title>
-                                <mat-card-subtitle>{{ tile.subtitle }}</mat-card-subtitle>
-                            </mat-card-header>
-                            <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
-                            <mat-card-content>
-                                <p>
-                                    {{ tile.description }}
-                                </p>
-                            </mat-card-content>
-                            <mat-card-actions>
-                                <button mat-button>LIKE</button>
-                                <button mat-button>SHARE</button>
-                            </mat-card-actions>
-                        </mat-card>
-                    </mat-grid-tile>       
-                }
+            <mat-grid-list cols="3" gutterSize="16px">
+                <mat-grid-tile *ngFor="let card of cards()">
+                    <mat-card>
+                        <mat-card-header>
+                            <div mat-card-avatar class="example-header-image"></div>
+                            <mat-card-title>{{ card.title }}</mat-card-title>
+                            <mat-card-subtitle>{{ card.subtitle }}</mat-card-subtitle>
+                        </mat-card-header>
+                        <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+                        <mat-card-content>
+                            <p>
+                                {{ card.description }}
+                            </p>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button mat-button>LIKE</button>
+                            <button mat-button>SHARE</button>
+                        </mat-card-actions>
+                    </mat-card>
+                </mat-grid-tile>
             </mat-grid-list>
         </mat-sidenav-content>
     </mat-sidenav-container>
