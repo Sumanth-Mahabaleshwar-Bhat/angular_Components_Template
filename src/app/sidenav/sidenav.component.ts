@@ -1,17 +1,21 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { NgClass, NgFor, NgIf } from '@angular/common';
-import { Component, ViewChild, inject, signal } from '@angular/core';
+import { Component, ViewChild, inject, signal, viewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
-import {MatToolbarModule} from '@angular/material/toolbar';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { CustomThemeService } from '../services/custom-theme.service';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 export interface Tile {
   title: string;
@@ -24,7 +28,7 @@ export interface Tile {
 @Component({
   selector: 'app-sidenav',
   standalone: true,
-  imports: [MatToolbarModule, MatIconModule, MatButtonModule, MatSidenavModule, MatListModule, NgIf, MatSlideToggleModule, NgClass, MatCardModule, ScrollingModule, MatGridListModule, NgFor, MatMenuModule],
+  imports: [MatToolbarModule, MatIconModule, MatButtonModule, MatSidenavModule, MatListModule, NgIf, MatSlideToggleModule, NgClass, MatCardModule, ScrollingModule, MatGridListModule, NgFor, MatMenuModule, MatFormFieldModule, MatInputModule, MatExpansionModule, MatDatepickerModule],
   templateUrl: './sidenav.component.html',
   styleUrl: './sidenav.component.scss'
 })
@@ -37,6 +41,7 @@ export class SidenavComponent {
   cards = signal<Tile[]>([]);
   setDarkModeToDisabled: boolean = false;
   setLightModeToDisabled: boolean = false;
+  accordion = viewChild.required(MatAccordion);
 
   constructor(private observer: BreakpointObserver) {
     const cards: Tile[] = [];
@@ -53,7 +58,7 @@ export class SidenavComponent {
 
   ngOnInit() {
     this.observer.observe(['(max-width: 800px)']).subscribe((screenSize) => {
-      if(screenSize.matches) {
+      if (screenSize.matches) {
         this.isMobile = true;
       } else {
         this.isMobile = false;
@@ -62,7 +67,7 @@ export class SidenavComponent {
   }
 
   toggleSideNavigationMenu() {
-    if(this.isMobile) {
+    if (this.isMobile) {
       this.sidenav.toggle();
       this.isCollapsed = false;
     } else {

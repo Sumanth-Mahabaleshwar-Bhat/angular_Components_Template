@@ -1,12 +1,13 @@
 <div>
     <mat-toolbar class="sidenav-toolbar">
         <button mat-icon-button aria-label="Menu icon" (click)="toggleSideNavigationMenu()">
-            <mat-icon [ngClass]="CustomThemeService.themeSignal() === 'dark-mode' ? 'dark-mode-icon' : ''">menu</mat-icon>
+            <mat-icon
+                [ngClass]="CustomThemeService.themeSignal() === 'dark-mode' ? 'dark-mode-icon' : ''">menu</mat-icon>
         </button>
     </mat-toolbar>
 
     <mat-sidenav-container autoSize="true">
-        <mat-sidenav [mode] = "isMobile ? 'over' : 'side'" [opened] = "isMobile ? 'false' : 'true'">
+        <mat-sidenav [mode]="isMobile ? 'over' : 'side'" [opened]="isMobile ? 'false' : 'true'">
             <mat-nav-list>
                 <a mat-list-item>
                     <span class="home-menu">
@@ -22,13 +23,13 @@
                         <span>
                             <button mat-icon-button>
                                 @if (CustomThemeService.themeSignal() === 'dark-mode') {
-                                    <mat-icon class="dark-mode-icon">
-                                        dark_mode
-                                    </mat-icon>
+                                <mat-icon class="dark-mode-icon">
+                                    dark_mode
+                                </mat-icon>
                                 } @else {
-                                    <mat-icon>
-                                        light_mode
-                                    </mat-icon>
+                                <mat-icon>
+                                    light_mode
+                                </mat-icon>
                                 }
                             </button>
                         </span>
@@ -37,15 +38,23 @@
             </mat-nav-list>
             <mat-nav-list>
                 <mat-list-item>
-                    <button mat-icon-button [matMenuTriggerFor]="modeMenu" aria-label="Light Mode or Dark Mode Selection">
+                    <span class="material-symbols-outlined">
+                        enable
+                    </span>
+                </mat-list-item>
+            </mat-nav-list>
+            <mat-nav-list>
+                <mat-list-item>
+                    <button mat-icon-button [matMenuTriggerFor]="modeMenu"
+                        aria-label="Light Mode or Dark Mode Selection">
                         @if (CustomThemeService.themeSignal() === 'dark-mode') {
-                            <mat-icon class="dark-mode-icon">
-                                dark_mode
-                            </mat-icon>
+                        <mat-icon class="dark-mode-icon">
+                            dark_mode
+                        </mat-icon>
                         } @else {
-                            <mat-icon>
-                                light_mode
-                            </mat-icon>
+                        <mat-icon>
+                            light_mode
+                        </mat-icon>
                         }
                     </button>
                     <mat-menu #modeMenu="matMenu">
@@ -57,9 +66,9 @@
                             <mat-icon class="dark-mode-icon">dark_mode</mat-icon>
                             <span>Dark</span>
                         </button>
-                    </mat-menu> 
-                </mat-list-item> 
-            </mat-nav-list> 
+                    </mat-menu>
+                </mat-list-item>
+            </mat-nav-list>
         </mat-sidenav>
         <mat-sidenav-content class="main-content">
             <h2>Side Navigation Content</h2>
@@ -71,7 +80,8 @@
                             <mat-card-title>{{ card.title }}</mat-card-title>
                             <mat-card-subtitle>{{ card.subtitle }}</mat-card-subtitle>
                         </mat-card-header>
-                        <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+                        <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+                            alt="Photo of a Shiba Inu">
                         <mat-card-content>
                             <p>
                                 {{ card.description }}
@@ -84,6 +94,111 @@
                     </mat-card>
                 </mat-grid-tile>
             </mat-grid-list>
+            <br>
+            <form class="example-form">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Company (disabled)</mat-label>
+                    <input matInput disabled value="Google">
+                </mat-form-field>
+
+                <table class="example-full-width" cellspacing="0">
+                    <tr>
+                        <td><mat-form-field class="example-full-width">
+                                <mat-label>First name</mat-label>
+                                <input matInput>
+                            </mat-form-field></td>
+                        <td><mat-form-field class="example-full-width">
+                                <mat-label>Long Last Name That Will Be Truncated</mat-label>
+                                <input matInput>
+                            </mat-form-field></td>
+                    </tr>
+                </table>
+
+                <p>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Address</mat-label>
+                        <textarea matInput placeholder="Ex. 100 Main St">1600 Amphitheatre Pkwy</textarea>
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Address 2</mat-label>
+                        <textarea matInput></textarea>
+                    </mat-form-field>
+                </p>
+
+                <table class="example-full-width" cellspacing="0">
+                    <tr>
+                        <td><mat-form-field class="example-full-width">
+                                <mat-label>City</mat-label>
+                                <input matInput placeholder="Ex. San Francisco">
+                            </mat-form-field></td>
+                        <td><mat-form-field class="example-full-width">
+                                <mat-label>State</mat-label>
+                                <input matInput placeholder="Ex. California">
+                            </mat-form-field></td>
+                        <td><mat-form-field class="example-full-width">
+                                <mat-label>Postal Code</mat-label>
+                                <input matInput #postalCode maxlength="5" placeholder="Ex. 94105" value="94043">
+                                <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
+                            </mat-form-field></td>
+                    </tr>
+                </table>
+            </form>
+            <br>
+            <div class="example-action-buttons">
+                <button mat-button (click)="accordion().openAll()">Expand All</button>
+                <button mat-button (click)="accordion().closeAll()">Collapse All</button>
+            </div>
+            <mat-accordion class="example-headers-align" multi>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title> Personal data </mat-panel-title>
+                        <mat-panel-description>
+                            Type your name and age
+                            <mat-icon>account_circle</mat-icon>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+
+                    <mat-form-field>
+                        <mat-label>First name</mat-label>
+                        <input matInput />
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Age</mat-label>
+                        <input matInput type="number" min="1" />
+                    </mat-form-field>
+                </mat-expansion-panel>
+                <mat-expansion-panel disabled>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title> Destination </mat-panel-title>
+                        <mat-panel-description>
+                            Type the country name
+                            <mat-icon>map</mat-icon>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+
+                    <mat-form-field>
+                        <mat-label>Country</mat-label>
+                        <input matInput />
+                    </mat-form-field>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title> Day of the trip </mat-panel-title>
+                        <mat-panel-description>
+                            Inform the date you wish to travel
+                            <mat-icon>date_range</mat-icon>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+
+                    <!-- <mat-form-field>
+                    <mat-label>Date</mat-label>
+                    <input matInput [matDatepicker]="picker" (focus)="picker.open()" readonly />
+                  </mat-form-field>
+                  <mat-datepicker #picker></mat-datepicker> -->
+                </mat-expansion-panel>
+            </mat-accordion>
         </mat-sidenav-content>
     </mat-sidenav-container>
 </div>
