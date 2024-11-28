@@ -18,6 +18,11 @@ import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { FormGroup, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { provideNativeDateAdapter } from '@angular/material/core';
+import { OnInit, HostListener, ElementRef } from '@angular/core';
+import Keyboard from 'simple-keyboard';
+//import 'simple-keyboard/build/css/index.css'; // Import the simple-keyboard CSS
+import {CdkDrag} from '@angular/cdk/drag-drop';
+import { NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
 export interface Tile {
   title: string;
@@ -32,12 +37,17 @@ export interface Tile {
   standalone: true,
   providers: [provideNativeDateAdapter()],
   imports: [MatToolbarModule, MatIconModule, MatButtonModule, MatSidenavModule, MatListModule, NgIf, MatSlideToggleModule, NgClass, MatCardModule, ScrollingModule, MatGridListModule, NgFor, MatMenuModule, MatFormFieldModule, MatInputModule, MatExpansionModule, MatDatepickerModule,
-    MatFormFieldModule, MatDatepickerModule, FormsModule, ReactiveFormsModule, JsonPipe
+    MatFormFieldModule, MatDatepickerModule, FormsModule, ReactiveFormsModule, JsonPipe, CdkDrag, NgbTimepickerModule
   ],
   templateUrl: './sidenav.component.html',
   styleUrl: './sidenav.component.scss'
 })
-export class SidenavComponent {
+export class SidenavComponent implements OnInit {
+  keyboard: Keyboard | undefined;
+  inputValue: string = ''; // Variable to hold the input field value
+  keyboardVisible: boolean = false; // Variable to manage keyboard visibility
+  time = { hour: 13, minute: 30 };
+	meridian = true;
 
   readonly range = new FormGroup({
     start: new FormControl<Date | null>(null),
@@ -54,7 +64,7 @@ export class SidenavComponent {
   setLightModeToDisabled: boolean = false;
   accordion = viewChild.required(MatAccordion);
 
-  constructor(private observer: BreakpointObserver) {
+  constructor(private observer: BreakpointObserver, private elementRef: ElementRef) {
     const cards: Tile[] = [];
     for (let i = 0; i < 9; i++) {
       cards.push({
@@ -74,6 +84,28 @@ export class SidenavComponent {
       } else {
         this.isMobile = false;
       }
+    });
+
+    // Initialize the simple-keyboard instance with proper layout and theme
+    this.keyboard = new Keyboard({
+      layout: {
+        default: [
+          "` 1 2 3 4 5 6 7 8 9 0 - = {bksp}",
+          "q w e r t y u i o p [ ] \\",
+          "a s d f g h j k l ; ' {enter}",
+          "z x c v b n m , . / {shift}",
+          "{space}"
+        ],
+      },
+      theme: 'hg-theme-default hg-layout-default', // Apply default themes
+      display: {
+        '{bksp}': 'backspace',
+        '{enter}': 'enter',
+        '{shift}': 'shift',
+        '{space}': 'space'
+      },
+      onChange: input => this.onInputChange(input),
+      onKeyPress: button => this.onKeyPress(button),
     });
   }
 
@@ -110,5 +142,37 @@ export class SidenavComponent {
   // Function to handle time change
   onTimeChange(event: any): void {
     this.selectedTime = event.target.value;
+  }
+
+  // Function to show the keyboard
+  showKeyboard(): void {
+    this.keyboardVisible = true;
+    if (this.keyboard) {
+      this.keyboard.setInput(this.inputValue);
+    }
+  }
+
+  // Function to hide the keyboard on blur event
+  hideKeyboardOnBlur(event: FocusEvent): void {
+    this.keyboardVisible = false;
+  }
+
+  // Function to hide the keyboard when clicking outside the component
+  @HostListener('document:click', ['$event'])
+  hideKeyboardOnClick(event: MouseEvent): void {
+    // Check if the clicked element is outside of the component
+    if (!this.elementRef.nativeElement.contains(event.target)) {
+      this.keyboardVisible = false;
+    }
+  }
+
+  // Update input value when the keyboard changes
+  onInputChange(input: string): void {
+    this.inputValue = input;
+  }
+
+  // Handle key press events if needed
+  onKeyPress(button: string): void {
+    console.log('Button pressed:', button);
   }
 }
